@@ -123,8 +123,8 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Go to Kith",
-      "href": "https://app.prismspace.xyz"
+      "label": "go to lumonol Manager",
+      "href": "https://manager.lumonol.co.uk"
     }
   },
   "contextual": {
