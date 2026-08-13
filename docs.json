@@ -13,25 +13,27 @@
   "background": {
   "color": {
     "light": "#FFFFFF",
-    "dark": "#000000"
-  }
+    "dark": "#0a0a0a"
+  },
+  "decoration": "gradient"
 },
-  "favicon": "/favicon.svg",
+  "favicon": {
+    "light": "/images/lumonol-mark-dark.png",
+    "dark": "/images/lumonol-mark.png"
+  },
   "navigation": {
     "tabs": [
       {
         "tab": "Documentation",
         "groups": [
           {
-            "group": "Get Started",
-            "pages": [
-              "quick-start"
-            ]
+            "group": "Start Here",
+            "icon": "rocket",
+            "pages": []
           },
           {
             "group": "Using Kith",
             "pages": [
-              "lumonol",
               "home",
               "messages",
               "activity-tracking",
@@ -110,9 +112,10 @@
     ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.png",
-    "height": 35
+    "light": "/images/LUMONOL-Logo.png",
+    "dark": "/images/lumonol-logo.png",
+    "height": 35,
+    "href": "https://lumonol.co.uk"
   },
   "navbar": {
     "links": [
@@ -130,17 +133,17 @@
   "contextual": {
     "options": [
       "copy",
-      "view",
       "chatgpt",
       "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
+      "perplexity"
     ]
   },
   "appearance": {
     "strict": true,
     "default": "dark"
+  },
+  "styling": {
+    "eyebrows": "section",
+    "codeblocks": "dark"
   }
 }
