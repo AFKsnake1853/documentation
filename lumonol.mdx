@@ -1,25 +1,32 @@
 ---
 title: "Lumonol"
 icon: "house"
-hero:
-  title: "Lumonol Documentation"
-  description: "The all-in-one platform for ER:LC server management — moderation, departments, CAD, and everything in between."
-  image:
-    dark: "/images/hero-dark.png"
-    light: "/images/hero-light.png"
+mode: "custom"
 ---
 
-<CardGroup cols={2}>
-  <Card title="Mod Panel" icon="shield">
-    Moderate your ER:LC server with logs, shifts, commands, and tools.
-  </Card>
-  <Card title="Dashboard" icon="app-window">
-    Manage server settings, roles, members, Discord, and automation.
-  </Card>
-  <Card title="Departments" icon="building">
-    Organize departments with rosters, resources, and activity tracking.
-  </Card>
-  <Card title="CAD" icon="headset">
-    Dispatch system for police, fire, EMS, DOT, law, and civilians.
-  </Card>
-</CardGroup>
+<div className="relative w-full overflow-hidden flex flex-col items-center justify-center text-center pb-16 pt-24">
+  <img src="/images/lumonol-hero-dark.png" className="absolute top-0 left-0 w-full h-[500px] object-cover block dark:hidden -z-10 opacity-50" />
+  <img src="/images/lumonol-hero-dark.png" className="absolute top-0 left-0 w-full h-[500px] object-cover hidden dark:block -z-10 opacity-50" />
+  
+  <h1 className="text-4xl md:text-5xl font-bold mb-4 z-10 text-gray-900 dark:text-white">Lumonol Documentation</h1>
+  <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto z-10 mb-12">
+    The all-in-one platform for ER:LC server management — moderation, departments, CAD, and everything in between.
+  </p>
+  
+  <div className="w-full max-w-5xl mx-auto px-4 z-10 text-left">
+    <CardGroup cols={2}>
+      <Card title="Mod Panel" icon="shield">
+        Moderate your ER:LC server with logs, shifts, commands, and tools.
+      </Card>
+      <Card title="Dashboard" icon="app-window">
+        Manage server settings, roles, members, Discord, and automation.
+      </Card>
+      <Card title="Departments" icon="building">
+        Organize departments with rosters, resources, and activity tracking.
+      </Card>
+      <Card title="CAD" icon="headset">
+        Dispatch system for police, fire, EMS, DOT, law, and civilians.
+      </Card>
+    </CardGroup>
+  </div>
+</div>
