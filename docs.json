@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Prism Space Docs",
+  "name": "Kith Docs",
   "icons": {
     "library": "lucide"
   },
@@ -29,8 +29,9 @@
             ]
           },
           {
-            "group": "Using Prism Space",
+            "group": "Using Kith",
             "pages": [
+              "lumonol",
               "home",
               "messages",
               "activity-tracking",
@@ -122,7 +123,7 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Go to Prism Space",
+      "label": "Go to Kith",
       "href": "https://app.prismspace.xyz"
     }
   },
