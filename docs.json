@@ -1,9 +1,9 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Kith Docs",
+  "name": "Lumonol Documentation",
   "icons": {
-    "library": "lucide"
+    "library": "fontawesome"
   },
   "colors": {
     "primary": "#36c185",
