@@ -1,0 +1,36 @@
+---
+title: "Activity tracking"
+description: "Record minutes and messages in game with the activity loader."
+icon: "satellite-dish"
+iconType: "solid"
+---
+
+The **Activity** module records how long your staff spend in game. Your game reports it through the activity loader, a script you add once.
+
+## Who is tracked
+
+Only people in the ranks switched on in **Settings › Activity Tracking** are recorded. The loader reports everyone in the server, and Ankra keeps the ranks you chose. Change the ranks at any time without touching your game.
+
+## Install the activity loader
+
+<Steps>
+  <Step title="Generate it">
+    In **Settings › Activity Tracking**, click **Generate loader**, then **Download loader**. The script already contains your workspace and a key, named **Activity loader** in **Settings › Developer**.
+  </Step>
+  <Step title="Add it to your game">
+    In Roblox Studio, put the script in **ServerScriptService**.
+  </Step>
+  <Step title="Allow HTTP requests">
+    Turn on **Game Settings › Security › Allow HTTP Requests**, then publish.
+  </Step>
+</Steps>
+
+The loader reads its settings from Ankra each time a server starts, so you never need to replace it when settings change.
+
+<Warning>
+  The loader contains an API key. Keep the script private. Anyone holding the key can report activity for your workspace.
+</Warning>
+
+<Note>
+  The loader also enforces Lumonol's platform-wide blacklist. Banned users, and members of blacklisted groups, are removed from your game.
+</Note>

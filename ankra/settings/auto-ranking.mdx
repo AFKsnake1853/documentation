@@ -1,0 +1,33 @@
+---
+title: "Auto Ranking"
+description: "Promote, demote and suspend people in your Roblox group from Ankra."
+icon: "arrow-trend-up"
+iconType: "solid"
+---
+
+Auto Ranking lets Ankra change ranks in your Roblox group: from the logbook, when a suspension starts or ends, and through the [API](/ankra/api-reference/introduction).
+
+## Connect it
+
+<Steps>
+  <Step title="Open Configuration">
+    Go to **Settings › Auto Ranking › Configuration**. Your group must be set in **Settings › General** first.
+  </Step>
+  <Step title="Sign in with Roblox">
+    Sign in with a Roblox account that can change ranks in your group. Ankra ranks people as that account.
+  </Step>
+</Steps>
+
+<Warning>
+  Roblox only lets an account rank people below its own rank. Use an account ranked above everyone Ankra should manage.
+</Warning>
+
+## Who can rank whom
+
+Someone ranking from Ankra can only change the ranks of people below them in the group, and only to ranks below their own. The workspace owner can rank anyone the connected account can.
+
+## Overview
+
+**Settings › Auto Ranking** lists every rank change, day by day, split into the ones Roblox accepted and the ones it refused.
+
+To stop ranking, disconnect on the Configuration page. Ankra stops changing ranks until someone signs in again.

@@ -25,7 +25,10 @@
     "tabs": [
       {
         "tab": "Ankra",
-        "icon": "layer-group",
+        "icon": {
+          "name": "layer-group",
+          "style": "solid"
+        },
         "groups": [
           {
             "group": "Get started",
@@ -37,20 +40,49 @@
           {
             "group": "Using Ankra",
             "pages": [
-              "ankra/staff",
-              "ankra/logbook",
-              "ankra/time-off",
-              "ankra/activity",
-              "ankra/sessions",
-              "ankra/assignments",
-              "ankra/knowledge"
+              {
+                "group": "Staff",
+                "pages": [
+                  "ankra/staff/profiles",
+                  "ankra/staff/logbook",
+                  "ankra/staff/time-off",
+                  "ankra/staff/assignments",
+                  "ankra/staff/timesheets",
+                  "ankra/staff/team-views",
+                  "ankra/staff/labels"
+                ]
+              },
+              {
+                "group": "Activity",
+                "pages": [
+                  "ankra/activity/tracking",
+                  "ankra/activity/leaderboard"
+                ]
+              },
+              {
+                "group": "Sessions",
+                "pages": [
+                  "ankra/sessions/creating-sessions",
+                  "ankra/sessions/session-roles",
+                  "ankra/sessions/session-servers",
+                  "ankra/sessions/cancelling-sessions",
+                  "ankra/sessions/session-tags"
+                ]
+              },
+              {
+                "group": "Knowledge",
+                "pages": [
+                  "ankra/knowledge/creating-content",
+                  "ankra/knowledge/categories"
+                ]
+              }
             ]
           },
           {
             "group": "Settings",
             "pages": [
-              "ankra/roles-and-permissions",
-              "ankra/auto-ranking"
+              "ankra/settings/roles-and-permissions",
+              "ankra/settings/auto-ranking"
             ]
           },
           {
@@ -62,132 +94,132 @@
               {
                 "group": "Workspace",
                 "pages": [
-                  "GET /get-workspace",
-                  "GET /list-roles",
-                  "GET /get-game-config",
-                  "GET /list-ranks",
-                  "GET /list-game-servers",
-                  "GET /list-actions"
+                  "ankra/api-reference/endpoints/workspace/get-workspace",
+                  "ankra/api-reference/endpoints/workspace/list-roles",
+                  "ankra/api-reference/endpoints/workspace/get-game-config",
+                  "ankra/api-reference/endpoints/workspace/list-ranks",
+                  "ankra/api-reference/endpoints/workspace/list-game-servers",
+                  "ankra/api-reference/endpoints/workspace/list-actions"
                 ]
               },
               {
                 "group": "Staff",
                 "pages": [
-                  "GET /list-staff",
-                  "GET /get-staff-dashboard",
-                  "GET /get-leaderboard",
-                  "GET /list-hired-staff",
-                  "GET /get-staff-member",
-                  "GET /search-users",
-                  "PATCH /set-rank",
-                  "GET /list-online-staff",
-                  "GET /list-departments",
-                  "GET /get-directory"
+                  "ankra/api-reference/endpoints/staff/list-staff",
+                  "ankra/api-reference/endpoints/staff/get-staff-dashboard",
+                  "ankra/api-reference/endpoints/staff/get-leaderboard",
+                  "ankra/api-reference/endpoints/staff/list-hired-staff",
+                  "ankra/api-reference/endpoints/staff/get-staff-member",
+                  "ankra/api-reference/endpoints/staff/search-users",
+                  "ankra/api-reference/endpoints/staff/set-rank",
+                  "ankra/api-reference/endpoints/staff/list-online-staff",
+                  "ankra/api-reference/endpoints/staff/list-departments",
+                  "ankra/api-reference/endpoints/staff/get-directory"
                 ]
               },
               {
                 "group": "Labels",
                 "pages": [
-                  "GET /list-labels",
-                  "GET /get-member-labels",
-                  "PUT /set-member-labels"
+                  "ankra/api-reference/endpoints/labels/list-labels",
+                  "ankra/api-reference/endpoints/labels/get-member-labels",
+                  "ankra/api-reference/endpoints/labels/set-member-labels"
                 ]
               },
               {
                 "group": "Logbook",
                 "pages": [
-                  "GET /get-logbook",
-                  "POST /create-logbook-entry",
-                  "PATCH /edit-logbook-entry",
-                  "DELETE /delete-logbook-entry"
+                  "ankra/api-reference/endpoints/logbook/get-logbook",
+                  "ankra/api-reference/endpoints/logbook/create-logbook-entry",
+                  "ankra/api-reference/endpoints/logbook/edit-logbook-entry",
+                  "ankra/api-reference/endpoints/logbook/delete-logbook-entry"
                 ]
               },
               {
                 "group": "Time off",
                 "pages": [
-                  "GET /list-timeoff",
-                  "GET /get-member-timeoff",
-                  "POST /create-timeoff",
-                  "PATCH /review-timeoff",
-                  "PATCH /adjust-timeoff",
-                  "POST /end-timeoff",
-                  "DELETE /delete-timeoff"
+                  "ankra/api-reference/endpoints/time-off/list-timeoff",
+                  "ankra/api-reference/endpoints/time-off/get-member-timeoff",
+                  "ankra/api-reference/endpoints/time-off/create-timeoff",
+                  "ankra/api-reference/endpoints/time-off/review-timeoff",
+                  "ankra/api-reference/endpoints/time-off/adjust-timeoff",
+                  "ankra/api-reference/endpoints/time-off/end-timeoff",
+                  "ankra/api-reference/endpoints/time-off/delete-timeoff"
                 ]
               },
               {
                 "group": "Activity",
                 "pages": [
-                  "GET /get-member-activity",
-                  "GET /list-activity-sessions",
-                  "POST /add-activity",
-                  "POST /sync-activity",
-                  "GET /get-timesheet",
-                  "PATCH /update-activity-record",
-                  "DELETE /delete-activity-record",
-                  "POST /end-activity-session"
+                  "ankra/api-reference/endpoints/activity/get-member-activity",
+                  "ankra/api-reference/endpoints/activity/list-activity-sessions",
+                  "ankra/api-reference/endpoints/activity/add-activity",
+                  "ankra/api-reference/endpoints/activity/sync-activity",
+                  "ankra/api-reference/endpoints/activity/get-timesheet",
+                  "ankra/api-reference/endpoints/activity/update-activity-record",
+                  "ankra/api-reference/endpoints/activity/delete-activity-record",
+                  "ankra/api-reference/endpoints/activity/end-activity-session"
                 ]
               },
               {
                 "group": "Sessions",
                 "pages": [
-                  "GET /list-session-types",
-                  "POST /create-session-type",
-                  "PATCH /update-session-type",
-                  "DELETE /delete-session-type",
-                  "GET /list-sessions",
-                  "GET /get-upcoming-sessions",
-                  "POST /create-session",
-                  "POST /cancel-session",
-                  "POST /restore-session",
-                  "DELETE /delete-session",
-                  "GET /get-session-signups",
-                  "POST /assign-session-role",
-                  "GET /list-session-servers",
-                  "POST /create-session-server",
-                  "PATCH /update-session-server",
-                  "DELETE /delete-session-server",
-                  "GET /get-session-logs",
-                  "GET /list-session-roles",
-                  "GET /list-session-tags"
+                  "ankra/api-reference/endpoints/sessions/list-session-types",
+                  "ankra/api-reference/endpoints/sessions/create-session-type",
+                  "ankra/api-reference/endpoints/sessions/update-session-type",
+                  "ankra/api-reference/endpoints/sessions/delete-session-type",
+                  "ankra/api-reference/endpoints/sessions/list-sessions",
+                  "ankra/api-reference/endpoints/sessions/get-upcoming-sessions",
+                  "ankra/api-reference/endpoints/sessions/create-session",
+                  "ankra/api-reference/endpoints/sessions/cancel-session",
+                  "ankra/api-reference/endpoints/sessions/restore-session",
+                  "ankra/api-reference/endpoints/sessions/delete-session",
+                  "ankra/api-reference/endpoints/sessions/get-session-signups",
+                  "ankra/api-reference/endpoints/sessions/assign-session-role",
+                  "ankra/api-reference/endpoints/sessions/list-session-servers",
+                  "ankra/api-reference/endpoints/sessions/create-session-server",
+                  "ankra/api-reference/endpoints/sessions/update-session-server",
+                  "ankra/api-reference/endpoints/sessions/delete-session-server",
+                  "ankra/api-reference/endpoints/sessions/get-session-logs",
+                  "ankra/api-reference/endpoints/sessions/list-session-roles",
+                  "ankra/api-reference/endpoints/sessions/list-session-tags"
                 ]
               },
               {
                 "group": "Assignments",
                 "pages": [
-                  "GET /list-assignments",
-                  "POST /create-assignment",
-                  "PATCH /update-assignment",
-                  "DELETE /delete-assignment",
-                  "GET /list-assignment-templates"
+                  "ankra/api-reference/endpoints/assignments/list-assignments",
+                  "ankra/api-reference/endpoints/assignments/create-assignment",
+                  "ankra/api-reference/endpoints/assignments/update-assignment",
+                  "ankra/api-reference/endpoints/assignments/delete-assignment",
+                  "ankra/api-reference/endpoints/assignments/list-assignment-templates"
                 ]
               },
               {
                 "group": "Knowledge",
                 "pages": [
-                  "GET /list-kb-categories",
-                  "GET /list-kb-documents",
-                  "GET /get-kb-document",
-                  "GET /list-kb-quick-links"
+                  "ankra/api-reference/endpoints/knowledge/list-kb-categories",
+                  "ankra/api-reference/endpoints/knowledge/list-kb-documents",
+                  "ankra/api-reference/endpoints/knowledge/get-kb-document",
+                  "ankra/api-reference/endpoints/knowledge/list-kb-quick-links"
                 ]
               },
               {
                 "group": "Bans",
                 "pages": [
-                  "GET /list-bans",
-                  "GET /get-ban",
-                  "POST /create-ban",
-                  "PATCH /update-ban",
-                  "PATCH /revoke-ban"
+                  "ankra/api-reference/endpoints/bans/list-bans",
+                  "ankra/api-reference/endpoints/bans/get-ban",
+                  "ankra/api-reference/endpoints/bans/create-ban",
+                  "ankra/api-reference/endpoints/bans/update-ban",
+                  "ankra/api-reference/endpoints/bans/revoke-ban"
                 ]
               },
               {
                 "group": "Orders",
                 "pages": [
-                  "GET /list-orders",
-                  "GET /search-orders",
-                  "POST /create-order",
-                  "PATCH /update-order",
-                  "GET /get-order-history"
+                  "ankra/api-reference/endpoints/orders/list-orders",
+                  "ankra/api-reference/endpoints/orders/search-orders",
+                  "ankra/api-reference/endpoints/orders/create-order",
+                  "ankra/api-reference/endpoints/orders/update-order",
+                  "ankra/api-reference/endpoints/orders/get-order-history"
                 ]
               }
             ]
