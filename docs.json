@@ -1,14 +1,14 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "luma",
   "name": "Lumonol Documentation",
   "icons": {
     "library": "fontawesome"
   },
   "colors": {
-    "primary": "#36c185",
-    "light": "#07C983",
-    "dark": "#36c185"
+    "primary": "#697B26",
+    "light": "#697B26",
+    "dark": "#697B26"
   },
   "background": {
     "color": {
