@@ -1,0 +1,6888 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Ankra API",
+    "version": "1.0.0",
+    "description": "Read and write an Ankra workspace from your games and scripts. Generate a key in Ankra's Settings › Developer.\n\nEvery request sends the key as `Authorization: Bearer ws_…` and the workspace as `?workspace_id=`: the ID in the\nworkspace's Ankra address, or its UUID. Each key works for its own workspace only.\n\nPeople are named by `roblox_user_id`. Parameters go in the query string for GET and DELETE, and in a JSON body\notherwise. An action belonging to a module answers 403 while that module is turned off. Errors come back as\n`{ \"error\": \"…\" }`."
+  },
+  "servers": [
+    {
+      "url": "https://api.lumonol.co.uk/ankra"
+    }
+  ],
+  "security": [
+    {
+      "apiKey": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Workspace",
+      "description": "The workspace, its roles and its Roblox group."
+    },
+    {
+      "name": "Staff",
+      "description": "Members, the directory, ranks. Needs the staff module."
+    },
+    {
+      "name": "Labels",
+      "description": "Labels on staff. Needs the staff module."
+    },
+    {
+      "name": "Logbook",
+      "description": "Promotions, warnings and notes. Needs the staff module."
+    },
+    {
+      "name": "Time off",
+      "description": "Inactivity requests. Needs the staff module."
+    },
+    {
+      "name": "Activity",
+      "description": "In-game minutes and messages. Needs the activity module."
+    },
+    {
+      "name": "Sessions",
+      "description": "Scheduled sessions, their servers and roles. Needs the activity module."
+    },
+    {
+      "name": "Assignments",
+      "description": "Weekly assignments. Needs the assignments module."
+    },
+    {
+      "name": "Knowledge",
+      "description": "The knowledge base, read only. Needs the knowledge module."
+    },
+    {
+      "name": "Bans",
+      "description": "Game bans."
+    },
+    {
+      "name": "Orders",
+      "description": "Game orders."
+    }
+  ],
+  "paths": {
+    "/get-workspace": {
+      "get": {
+        "operationId": "get-workspace",
+        "tags": [
+          "Workspace"
+        ],
+        "summary": "Get workspace",
+        "description": "The workspace: name, Roblox group, setup state.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-roles": {
+      "get": {
+        "operationId": "list-roles",
+        "tags": [
+          "Workspace"
+        ],
+        "summary": "List roles",
+        "description": "The workspace's roles, highest first.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Role"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-game-config": {
+      "get": {
+        "operationId": "get-game-config",
+        "tags": [
+          "Workspace"
+        ],
+        "summary": "Get game config",
+        "description": "Activity tracking settings for game servers.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-ranks": {
+      "get": {
+        "operationId": "list-ranks",
+        "tags": [
+          "Workspace"
+        ],
+        "summary": "List ranks",
+        "description": "The Roblox group's ranks, for set-rank.\n\nNeeds the workspace's Roblox group set in Settings › General.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-game-servers": {
+      "get": {
+        "operationId": "list-game-servers",
+        "tags": [
+          "Workspace"
+        ],
+        "summary": "List game servers",
+        "description": "A place's public servers (place_id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "place_id",
+            "in": "query",
+            "required": true,
+            "description": "The Roblox place ID.",
+            "schema": {
+              "type": "integer",
+              "description": "The Roblox place ID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-staff": {
+      "get": {
+        "operationId": "list-staff",
+        "tags": [
+          "Staff"
+        ],
+        "summary": "List staff",
+        "description": "Members, with search, limit and offset.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Matches Roblox usernames and display names.",
+            "schema": {
+              "type": "string",
+              "description": "Matches Roblox usernames and display names."
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "How many to return, up to 100.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50,
+              "description": "How many to return, up to 100."
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "How many to skip, for paging.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "description": "How many to skip, for paging."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "staff": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/StaffMember"
+                      }
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "offset": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-staff-dashboard": {
+      "get": {
+        "operationId": "get-staff-dashboard",
+        "tags": [
+          "Staff"
+        ],
+        "summary": "Get staff dashboard",
+        "description": "Every member's minutes and messages this week.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-leaderboard": {
+      "get": {
+        "operationId": "get-leaderboard",
+        "tags": [
+          "Staff"
+        ],
+        "summary": "Get leaderboard",
+        "description": "Most minutes, for period=week|month|all.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "required": false,
+            "description": "Which minutes count.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "week",
+                "month",
+                "all"
+              ],
+              "default": "week",
+              "description": "Which minutes count."
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "How many to return, up to 50.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 10,
+              "description": "How many to return, up to 50."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "leaderboard": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "rank": {
+                            "type": "integer"
+                          },
+                          "user_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "roblox_username": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "display_name": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "roblox_user_id": {
+                            "type": [
+                              "integer",
+                              "null"
+                            ]
+                          },
+                          "minutes": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "period": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-hired-staff": {
+      "get": {
+        "operationId": "list-hired-staff",
+        "tags": [
+          "Staff"
+        ],
+        "summary": "List hired staff",
+        "description": "Who joined in the last 7 days (days=).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "description": "How far back to look.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 90,
+              "default": 7,
+              "description": "How far back to look."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "hired": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/StaffMember"
+                      }
+                    },
+                    "days": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-staff-member": {
+      "get": {
+        "operationId": "get-staff-member",
+        "tags": [
+          "Staff"
+        ],
+        "summary": "Get staff member",
+        "description": "One member and their role, by roblox_user_id.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "roblox_user_id",
+            "in": "query",
+            "required": true,
+            "description": "The Roblox user ID of the person.",
+            "schema": {
+              "type": "integer",
+              "description": "The Roblox user ID of the person."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search-users": {
+      "get": {
+        "operationId": "search-users",
+        "tags": [
+          "Staff"
+        ],
+        "summary": "Search users",
+        "description": "Members whose Roblox username matches (username).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "username",
+            "in": "query",
+            "required": true,
+            "description": "A Roblox username. Only members of this workspace are returned.",
+            "schema": {
+              "type": "string",
+              "description": "A Roblox username. Only members of this workspace are returned."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/set-rank": {
+      "patch": {
+        "operationId": "set-rank",
+        "tags": [
+          "Staff"
+        ],
+        "summary": "Set rank",
+        "description": "Rank someone in the group, by role_id or rank number.\n\nSend role_id or rank. Goes through Auto Ranking, so the workspace needs it connected, and is recorded in the ranking log.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "roblox_user_id"
+                ],
+                "properties": {
+                  "roblox_user_id": {
+                    "type": "integer",
+                    "description": "The Roblox user ID of the person."
+                  },
+                  "role_id": {
+                    "type": "string",
+                    "description": "The Roblox role ID to rank them to."
+                  },
+                  "rank": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 255,
+                    "description": "The rank number to rank them to, looked up in the group's roles."
+                  },
+                  "executor_roblox_user_id": {
+                    "type": "integer",
+                    "description": "Roblox user ID of whoever did this in game. Recorded as the actor when they are linked to someone in the workspace."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-online-staff": {
+      "get": {
+        "operationId": "list-online-staff",
+        "tags": [
+          "Staff"
+        ],
+        "summary": "List online staff",
+        "description": "Who is in game right now.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-departments": {
+      "get": {
+        "operationId": "list-departments",
+        "tags": [
+          "Staff"
+        ],
+        "summary": "List departments",
+        "description": "The workspace's departments.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-directory": {
+      "get": {
+        "operationId": "get-directory",
+        "tags": [
+          "Staff"
+        ],
+        "summary": "Get directory",
+        "description": "The staff directory, by department.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-labels": {
+      "get": {
+        "operationId": "list-labels",
+        "tags": [
+          "Labels"
+        ],
+        "summary": "List labels",
+        "description": "The workspace's labels.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Label"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-member-labels": {
+      "get": {
+        "operationId": "get-member-labels",
+        "tags": [
+          "Labels"
+        ],
+        "summary": "Get member labels",
+        "description": "Someone's labels.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "roblox_user_id",
+            "in": "query",
+            "required": true,
+            "description": "The Roblox user ID of the person.",
+            "schema": {
+              "type": "integer",
+              "description": "The Roblox user ID of the person."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberLabel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/set-member-labels": {
+      "put": {
+        "operationId": "set-member-labels",
+        "tags": [
+          "Labels"
+        ],
+        "summary": "Set member labels",
+        "description": "Replace someone's labels with label_ids.\n\nReplaces the whole set: labels not listed are taken off.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "label_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "uuid"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "roblox_user_id",
+                  "label_ids"
+                ],
+                "properties": {
+                  "roblox_user_id": {
+                    "type": "integer",
+                    "description": "The Roblox user ID of the person."
+                  },
+                  "label_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "description": "Every label they should have."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-logbook": {
+      "get": {
+        "operationId": "get-logbook",
+        "tags": [
+          "Logbook"
+        ],
+        "summary": "Get logbook",
+        "description": "Someone's logbook, newest first.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "roblox_user_id",
+            "in": "query",
+            "required": true,
+            "description": "The Roblox user ID of the person.",
+            "schema": {
+              "type": "integer",
+              "description": "The Roblox user ID of the person."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LogbookEntry"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create-logbook-entry": {
+      "post": {
+        "operationId": "create-logbook-entry",
+        "tags": [
+          "Logbook"
+        ],
+        "summary": "Create logbook entry",
+        "description": "Log an entry: entry_type, title, content, amount.\n\nOnly writes the entry. To change their rank too, call set-rank.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogbookEntry"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "roblox_user_id",
+                  "title"
+                ],
+                "properties": {
+                  "roblox_user_id": {
+                    "type": "integer",
+                    "description": "The Roblox user ID of the person."
+                  },
+                  "entry_type": {
+                    "type": "string",
+                    "enum": [
+                      "Note",
+                      "Promotion",
+                      "Demotion",
+                      "Suspension",
+                      "Termination",
+                      "Strike",
+                      "Reminder",
+                      "Strike Revocation"
+                    ],
+                    "default": "Note",
+                    "description": "\"Strike\" is a warning."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The first line of the entry."
+                  },
+                  "content": {
+                    "type": "string",
+                    "description": "The rest of the entry."
+                  },
+                  "amount": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100,
+                    "default": 1,
+                    "description": "How many warnings a Strike gives, or a Strike Revocation takes back."
+                  },
+                  "executor_roblox_user_id": {
+                    "type": "integer",
+                    "description": "Roblox user ID of whoever did this in game. Recorded as the actor when they are linked to someone in the workspace."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/edit-logbook-entry": {
+      "patch": {
+        "operationId": "edit-logbook-entry",
+        "tags": [
+          "Logbook"
+        ],
+        "summary": "Edit logbook entry",
+        "description": "Change an entry's title or content (entry_id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogbookEntry"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "entry_id"
+                ],
+                "properties": {
+                  "entry_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The entry's ID."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "The new first line."
+                  },
+                  "content": {
+                    "type": "string",
+                    "description": "The new rest of the entry."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete-logbook-entry": {
+      "delete": {
+        "operationId": "delete-logbook-entry",
+        "tags": [
+          "Logbook"
+        ],
+        "summary": "Delete logbook entry",
+        "description": "Delete an entry (entry_id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "entry_id",
+            "in": "query",
+            "required": true,
+            "description": "The entry's ID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The entry's ID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-timeoff": {
+      "get": {
+        "operationId": "list-timeoff",
+        "tags": [
+          "Time off"
+        ],
+        "summary": "List time off",
+        "description": "Requests, filtered by status= or active=true.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Only requests in this state.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "approved",
+                "denied"
+              ],
+              "description": "Only requests in this state."
+            }
+          },
+          {
+            "name": "active",
+            "in": "query",
+            "required": false,
+            "description": "true: only approved time off that covers today.",
+            "schema": {
+              "type": "boolean",
+              "description": "true: only approved time off that covers today."
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "How many to return, up to 100.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50,
+              "description": "How many to return, up to 100."
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "How many to skip, for paging.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "description": "How many to skip, for paging."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timeoff": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TimeOffRequest"
+                      }
+                    },
+                    "offset": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-member-timeoff": {
+      "get": {
+        "operationId": "get-member-timeoff",
+        "tags": [
+          "Time off"
+        ],
+        "summary": "Get member time off",
+        "description": "Someone's time off.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "roblox_user_id",
+            "in": "query",
+            "required": true,
+            "description": "The Roblox user ID of the person.",
+            "schema": {
+              "type": "integer",
+              "description": "The Roblox user ID of the person."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TimeOffRequest"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create-timeoff": {
+      "post": {
+        "operationId": "create-timeoff",
+        "tags": [
+          "Time off"
+        ],
+        "summary": "Create time off",
+        "description": "Request time off: start_date, end_date, type, notes.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeOffRequest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "roblox_user_id",
+                  "start_date",
+                  "end_date"
+                ],
+                "properties": {
+                  "roblox_user_id": {
+                    "type": "integer",
+                    "description": "The Roblox user ID of the person."
+                  },
+                  "start_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The first day off."
+                  },
+                  "end_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The last day off."
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "The kind, as the Inactivity form names it, e.g. \"Holiday/Vacation\"."
+                  },
+                  "reason": {
+                    "type": "string",
+                    "description": "Free text, for a type of \"Other\"."
+                  },
+                  "notes": {
+                    "type": "string",
+                    "description": "Notes."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "approved"
+                    ],
+                    "default": "pending",
+                    "description": "approved files it as already approved."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/review-timeoff": {
+      "patch": {
+        "operationId": "review-timeoff",
+        "tags": [
+          "Time off"
+        ],
+        "summary": "Review time off",
+        "description": "Approve or deny a request (id, status).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeOffRequest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "status"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The request's ID."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "approved",
+                      "denied"
+                    ],
+                    "description": "The decision."
+                  },
+                  "executor_roblox_user_id": {
+                    "type": "integer",
+                    "description": "Roblox user ID of whoever did this in game. Recorded as the actor when they are linked to someone in the workspace."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/adjust-timeoff": {
+      "patch": {
+        "operationId": "adjust-timeoff",
+        "tags": [
+          "Time off"
+        ],
+        "summary": "Adjust time off",
+        "description": "Change a request's dates, type or notes (id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeOffRequest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "start_date",
+                  "end_date"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The request's ID."
+                  },
+                  "start_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The first day off."
+                  },
+                  "end_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The last day off."
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "The kind."
+                  },
+                  "notes": {
+                    "type": "string",
+                    "description": "Notes."
+                  },
+                  "reason": {
+                    "type": "string",
+                    "description": "Free text, for a type of \"Other\"."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/end-timeoff": {
+      "post": {
+        "operationId": "end-timeoff",
+        "tags": [
+          "Time off"
+        ],
+        "summary": "End time off",
+        "description": "End someone's current time off today.\n\nApproved time off covering today is cut short to end today.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "ended": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "roblox_user_id"
+                ],
+                "properties": {
+                  "roblox_user_id": {
+                    "type": "integer",
+                    "description": "The Roblox user ID of the person."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete-timeoff": {
+      "delete": {
+        "operationId": "delete-timeoff",
+        "tags": [
+          "Time off"
+        ],
+        "summary": "Delete time off",
+        "description": "Delete a request (id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "description": "The request's ID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The request's ID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The staff module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-member-activity": {
+      "get": {
+        "operationId": "get-member-activity",
+        "tags": [
+          "Activity"
+        ],
+        "summary": "Get member activity",
+        "description": "Someone's minutes, messages and recent sessions.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "roblox_user_id",
+            "in": "query",
+            "required": true,
+            "description": "The Roblox user ID of the person.",
+            "schema": {
+              "type": "integer",
+              "description": "The Roblox user ID of the person."
+            }
+          },
+          {
+            "name": "since",
+            "in": "query",
+            "required": false,
+            "description": "Only count from here.",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Only count from here."
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "How many to return, up to 100.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50,
+              "description": "How many to return, up to 100."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "roblox_user_id": {
+                      "type": "integer"
+                    },
+                    "total_minutes": {
+                      "type": "number"
+                    },
+                    "total_messages": {
+                      "type": "integer"
+                    },
+                    "sessions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ActivitySession"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-activity-sessions": {
+      "get": {
+        "operationId": "list-activity-sessions",
+        "tags": [
+          "Activity"
+        ],
+        "summary": "List activity sessions",
+        "description": "Recent in-game sessions (roblox_user_id=, since=).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "roblox_user_id",
+            "in": "query",
+            "required": false,
+            "description": "Only this person's sessions.",
+            "schema": {
+              "type": "integer",
+              "description": "Only this person's sessions."
+            }
+          },
+          {
+            "name": "since",
+            "in": "query",
+            "required": false,
+            "description": "Only sessions started from here.",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Only sessions started from here."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ActivitySession"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/add-activity": {
+      "post": {
+        "operationId": "add-activity",
+        "tags": [
+          "Activity"
+        ],
+        "summary": "Add activity",
+        "description": "Add minutes the game did not report: minutes, session_date.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "roblox_user_id",
+                  "minutes",
+                  "session_date"
+                ],
+                "properties": {
+                  "roblox_user_id": {
+                    "type": "integer",
+                    "description": "The Roblox user ID of the person."
+                  },
+                  "minutes": {
+                    "type": "number",
+                    "description": "Minutes to add."
+                  },
+                  "session_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The day they count towards."
+                  },
+                  "messages_sent": {
+                    "type": "integer",
+                    "default": 0,
+                    "description": "Chat messages to add."
+                  },
+                  "source": {
+                    "type": "string",
+                    "default": "game",
+                    "description": "Where they came from."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sync-activity": {
+      "post": {
+        "operationId": "sync-activity",
+        "tags": [
+          "Activity"
+        ],
+        "summary": "Sync activity",
+        "description": "Report join, leave, idle and chat events from a game server.\n\nWhat the Ankra activity loader sends. Joins only start a session for tracked ranks, per Settings › Activity Tracking.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "events"
+                ],
+                "properties": {
+                  "events": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "type",
+                        "roblox_user_id"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "join",
+                            "leave",
+                            "active",
+                            "idle",
+                            "typing",
+                            "afk_warning",
+                            "chat"
+                          ]
+                        },
+                        "roblox_user_id": {
+                          "type": "integer"
+                        },
+                        "username": {
+                          "type": "string"
+                        },
+                        "game_name": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "description": "Events in the order they happened."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-timesheet": {
+      "get": {
+        "operationId": "get-timesheet",
+        "tags": [
+          "Activity"
+        ],
+        "summary": "Get timesheet",
+        "description": "One day's sessions and added records (date).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "description": "The day. Defaults to today (UTC).",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "The day. Defaults to today (UTC)."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "sessions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ActivitySession"
+                      }
+                    },
+                    "records": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update-activity-record": {
+      "patch": {
+        "operationId": "update-activity-record",
+        "tags": [
+          "Activity"
+        ],
+        "summary": "Update activity record",
+        "description": "Change an added record's minutes, messages or day (id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The record's ID."
+                  },
+                  "minutes": {
+                    "type": "number",
+                    "description": "New minutes."
+                  },
+                  "messages_sent": {
+                    "type": "integer",
+                    "description": "New message count."
+                  },
+                  "session_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "New day."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete-activity-record": {
+      "delete": {
+        "operationId": "delete-activity-record",
+        "tags": [
+          "Activity"
+        ],
+        "summary": "Delete activity record",
+        "description": "Delete an added record (id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "description": "The record's ID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The record's ID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/end-activity-session": {
+      "post": {
+        "operationId": "end-activity-session",
+        "tags": [
+          "Activity"
+        ],
+        "summary": "End activity session",
+        "description": "Punch someone out: close their open in-game session.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "ended": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "roblox_user_id"
+                ],
+                "properties": {
+                  "roblox_user_id": {
+                    "type": "integer",
+                    "description": "The Roblox user ID of the person."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-session-types": {
+      "get": {
+        "operationId": "list-session-types",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "List session types",
+        "description": "Session types (schedules).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SessionType"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create-session-type": {
+      "post": {
+        "operationId": "create-session-type",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Create session type",
+        "description": "A new session type: name, first_event_date, start_time, repeat_pattern.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionType"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "first_event_date"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "What the sessions are called."
+                  },
+                  "first_event_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The first session."
+                  },
+                  "start_time": {
+                    "type": "string",
+                    "default": "00:00",
+                    "description": "HH:mm."
+                  },
+                  "repeat_pattern": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "daily",
+                      "weekly",
+                      "biweekly",
+                      "monthly"
+                    ],
+                    "default": "none",
+                    "description": "How often it repeats."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "The public description."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update-session-type": {
+      "patch": {
+        "operationId": "update-session-type",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Update session type",
+        "description": "Change a session type (id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionType"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The session type's ID."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "New name."
+                  },
+                  "first_event_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "New first session."
+                  },
+                  "start_time": {
+                    "type": "string",
+                    "description": "HH:mm."
+                  },
+                  "repeat_pattern": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "daily",
+                      "weekly",
+                      "biweekly",
+                      "monthly"
+                    ],
+                    "description": "How often it repeats."
+                  },
+                  "game_link": {
+                    "type": "string",
+                    "description": "A link to the game."
+                  },
+                  "public_description": {
+                    "type": "string",
+                    "description": "The public description."
+                  },
+                  "unlock_minutes_before": {
+                    "type": "integer",
+                    "description": "Minutes before the start that the server opens."
+                  },
+                  "lock_minutes_after": {
+                    "type": "integer",
+                    "description": "Minutes after the start that the server locks."
+                  },
+                  "allow_adhoc_events": {
+                    "type": "boolean",
+                    "description": "Whether create-session may start one of these."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete-session-type": {
+      "delete": {
+        "operationId": "delete-session-type",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Delete session type",
+        "description": "Delete a session type and all its sessions (id).\n\nDeletes every session of the type too.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "description": "The session type's ID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The session type's ID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-sessions": {
+      "get": {
+        "operationId": "list-sessions",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "List sessions",
+        "description": "Sessions between start_date and end_date (up to 92 days).\n\nGenerated from the session types, so sessions nobody has acted on have no event_id yet.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "description": "The first day. Defaults to today (UTC).",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "The first day. Defaults to today (UTC)."
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "description": "The last day, up to 92 days on. Defaults to start_date.",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "The last day, up to 92 days on. Defaults to start_date."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Session"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-upcoming-sessions": {
+      "get": {
+        "operationId": "get-upcoming-sessions",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Get upcoming sessions",
+        "description": "The next sessions from today (limit=, days=).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "How many to return, up to 100.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10,
+              "description": "How many to return, up to 100."
+            }
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "description": "How far ahead to look.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 92,
+              "default": 30,
+              "description": "How far ahead to look."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Session"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create-session": {
+      "post": {
+        "operationId": "create-session",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Create session",
+        "description": "Start an ad-hoc session of a type (schedule_id, date).\n\nStarts an ad-hoc session. The type must allow them, and have no session that day already.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "schedule_id"
+                ],
+                "properties": {
+                  "schedule_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The session type's ID."
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The day. Defaults to today (UTC)."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "This session's description."
+                  },
+                  "executor_roblox_user_id": {
+                    "type": "integer",
+                    "description": "Roblox user ID of whoever did this in game. Recorded as the actor when they are linked to someone in the workspace."
+                  },
+                  "actor_name": {
+                    "type": "string",
+                    "description": "The name to record as the actor. Defaults to \"API\"."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cancel-session": {
+      "post": {
+        "operationId": "cancel-session",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Cancel session",
+        "description": "Cancel a session (event_id, or schedule_id and date).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "event_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "status": {
+                      "type": "string",
+                      "const": "cancelled"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "event_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The session's ID. Or send schedule_id and date instead."
+                  },
+                  "schedule_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "With date: the session type, for a session that has no event_id yet."
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "With schedule_id: the day of the session, YYYY-MM-DD."
+                  },
+                  "executor_roblox_user_id": {
+                    "type": "integer",
+                    "description": "Roblox user ID of whoever did this in game. Recorded as the actor when they are linked to someone in the workspace."
+                  },
+                  "actor_name": {
+                    "type": "string",
+                    "description": "The name to record as the actor. Defaults to \"API\"."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/restore-session": {
+      "post": {
+        "operationId": "restore-session",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Restore session",
+        "description": "Un-cancel a session.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "event_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "status": {
+                      "type": "string",
+                      "const": "scheduled"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "event_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The session's ID. Or send schedule_id and date instead."
+                  },
+                  "schedule_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "With date: the session type, for a session that has no event_id yet."
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "With schedule_id: the day of the session, YYYY-MM-DD."
+                  },
+                  "executor_roblox_user_id": {
+                    "type": "integer",
+                    "description": "Roblox user ID of whoever did this in game. Recorded as the actor when they are linked to someone in the workspace."
+                  },
+                  "actor_name": {
+                    "type": "string",
+                    "description": "The name to record as the actor. Defaults to \"API\"."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete-session": {
+      "delete": {
+        "operationId": "delete-session",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Delete session",
+        "description": "Delete a session with its servers and signups (event_id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "event_id",
+            "in": "query",
+            "required": true,
+            "description": "The session's ID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The session's ID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-session-signups": {
+      "get": {
+        "operationId": "get-session-signups",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Get session signups",
+        "description": "A session's signups (event_id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "event_id",
+            "in": "query",
+            "required": true,
+            "description": "The session's ID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The session's ID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assign-session-role": {
+      "post": {
+        "operationId": "assign-session-role",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Assign session role",
+        "description": "Give someone a role on a session (event_id, roblox_user_id, role_id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "event_id",
+                  "roblox_user_id",
+                  "role_id"
+                ],
+                "properties": {
+                  "event_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The session's ID."
+                  },
+                  "roblox_user_id": {
+                    "type": "integer",
+                    "description": "The Roblox user ID of the person. They must be linked to someone in the workspace."
+                  },
+                  "role_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The session role's ID."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-session-servers": {
+      "get": {
+        "operationId": "list-session-servers",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "List session servers",
+        "description": "A session's servers (event_id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "event_id",
+            "in": "query",
+            "required": true,
+            "description": "The session's ID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The session's ID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create-session-server": {
+      "post": {
+        "operationId": "create-session-server",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Create session server",
+        "description": "Add a server to a session (event_id, or schedule_id and date).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "event_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The session's ID. Or send schedule_id and date instead."
+                  },
+                  "schedule_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "With date: the session type, for a session that has no event_id yet."
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "With schedule_id: the day of the session, YYYY-MM-DD."
+                  },
+                  "label": {
+                    "type": "string",
+                    "default": "Auto Server",
+                    "description": "The server's name."
+                  },
+                  "server_code": {
+                    "type": "string",
+                    "description": "The private server code."
+                  },
+                  "created_by_roblox_id": {
+                    "type": "integer",
+                    "description": "Roblox user ID of whoever made it."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update-session-server": {
+      "patch": {
+        "operationId": "update-session-server",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Update session server",
+        "description": "Change a server's label or code (server_id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "server_id"
+                ],
+                "properties": {
+                  "server_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The server's ID."
+                  },
+                  "label": {
+                    "type": "string",
+                    "description": "New name."
+                  },
+                  "server_code": {
+                    "type": "string",
+                    "description": "New code."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete-session-server": {
+      "delete": {
+        "operationId": "delete-session-server",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Delete session server",
+        "description": "Remove a server (server_id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "server_id",
+            "in": "query",
+            "required": true,
+            "description": "The server's ID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The server's ID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-session-logs": {
+      "get": {
+        "operationId": "get-session-logs",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Get session logs",
+        "description": "Who changed what on a session (event_id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "event_id",
+            "in": "query",
+            "required": true,
+            "description": "The session's ID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The session's ID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-session-roles": {
+      "get": {
+        "operationId": "list-session-roles",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "List session roles",
+        "description": "Session role groups and their roles.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-session-tags": {
+      "get": {
+        "operationId": "list-session-tags",
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "List session tags",
+        "description": "Session tags.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The activity module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-assignments": {
+      "get": {
+        "operationId": "list-assignments",
+        "tags": [
+          "Assignments"
+        ],
+        "summary": "List assignments",
+        "description": "Assignments (roblox_user_id=, status=).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "roblox_user_id",
+            "in": "query",
+            "required": false,
+            "description": "Only this person's.",
+            "schema": {
+              "type": "integer",
+              "description": "Only this person's."
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Only this status.",
+            "schema": {
+              "type": "string",
+              "description": "Only this status."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Assignment"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The assignments module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create-assignment": {
+      "post": {
+        "operationId": "create-assignment",
+        "tags": [
+          "Assignments"
+        ],
+        "summary": "Create assignment",
+        "description": "Give someone an assignment: title, description, due_date, assignment_type, target.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assignment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The assignments module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "roblox_user_id",
+                  "title"
+                ],
+                "properties": {
+                  "roblox_user_id": {
+                    "type": "integer",
+                    "description": "The Roblox user ID of the person."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "What it is."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "More detail."
+                  },
+                  "due_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "When it is due."
+                  },
+                  "assignment_type": {
+                    "type": "string",
+                    "default": "checkbox",
+                    "description": "checkbox, minutes, sessions_attended or sessions_hosted."
+                  },
+                  "target": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 1,
+                    "description": "How much a counted assignment needs."
+                  },
+                  "priority": {
+                    "type": "string",
+                    "default": "normal",
+                    "description": "Priority."
+                  },
+                  "executor_roblox_user_id": {
+                    "type": "integer",
+                    "description": "Roblox user ID of whoever did this in game. Recorded as the actor when they are linked to someone in the workspace."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update-assignment": {
+      "patch": {
+        "operationId": "update-assignment",
+        "tags": [
+          "Assignments"
+        ],
+        "summary": "Update assignment",
+        "description": "Change an assignment's status, progress or details (id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assignment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The assignments module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The assignment's ID."
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "New status."
+                  },
+                  "progress": {
+                    "type": "integer",
+                    "description": "New progress."
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "New title."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "New description."
+                  },
+                  "due_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "New due date."
+                  },
+                  "target": {
+                    "type": "integer",
+                    "description": "New target."
+                  },
+                  "priority": {
+                    "type": "string",
+                    "description": "New priority."
+                  },
+                  "executor_roblox_user_id": {
+                    "type": "integer",
+                    "description": "Roblox user ID of whoever did this in game. Recorded as the actor when they are linked to someone in the workspace."
+                  },
+                  "actor_name": {
+                    "type": "string",
+                    "description": "The name to record as the actor. Defaults to \"API\"."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete-assignment": {
+      "delete": {
+        "operationId": "delete-assignment",
+        "tags": [
+          "Assignments"
+        ],
+        "summary": "Delete assignment",
+        "description": "Delete an assignment (id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "description": "The assignment's ID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The assignment's ID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The assignments module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-assignment-templates": {
+      "get": {
+        "operationId": "list-assignment-templates",
+        "tags": [
+          "Assignments"
+        ],
+        "summary": "List assignment templates",
+        "description": "The weekly assignments set in Settings › Assignments.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The assignments module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-kb-categories": {
+      "get": {
+        "operationId": "list-kb-categories",
+        "tags": [
+          "Knowledge"
+        ],
+        "summary": "List KB categories",
+        "description": "Knowledge base categories.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The knowledge module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-kb-documents": {
+      "get": {
+        "operationId": "list-kb-documents",
+        "tags": [
+          "Knowledge"
+        ],
+        "summary": "List KB documents",
+        "description": "Documents, without their content (category_id=).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "category_id",
+            "in": "query",
+            "required": false,
+            "description": "Only this category.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Only this category."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The knowledge module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-kb-document": {
+      "get": {
+        "operationId": "get-kb-document",
+        "tags": [
+          "Knowledge"
+        ],
+        "summary": "Get KB document",
+        "description": "One document with its content (id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "description": "The document's ID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The document's ID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The knowledge module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-kb-quick-links": {
+      "get": {
+        "operationId": "list-kb-quick-links",
+        "tags": [
+          "Knowledge"
+        ],
+        "summary": "List KB quick links",
+        "description": "The knowledge base's quick links.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "The knowledge module is turned off for this workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-bans": {
+      "get": {
+        "operationId": "list-bans",
+        "tags": [
+          "Bans"
+        ],
+        "summary": "List bans",
+        "description": "Bans (active_only=, search=).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "active_only",
+            "in": "query",
+            "required": false,
+            "description": "false includes lifted bans.",
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "description": "false includes lifted bans."
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Matches the player username.",
+            "schema": {
+              "type": "string",
+              "description": "Matches the player username."
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "How many to return, up to 100.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50,
+              "description": "How many to return, up to 100."
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "How many to skip, for paging.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "description": "How many to skip, for paging."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bans": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Ban"
+                      }
+                    },
+                    "offset": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-ban": {
+      "get": {
+        "operationId": "get-ban",
+        "tags": [
+          "Bans"
+        ],
+        "summary": "Get ban",
+        "description": "One ban (id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "description": "The ban's ID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The ban's ID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ban"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create-ban": {
+      "post": {
+        "operationId": "create-ban",
+        "tags": [
+          "Bans"
+        ],
+        "summary": "Create ban",
+        "description": "Ban a player: player_username, ban_reason, source.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ban"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "player_username",
+                  "ban_reason",
+                  "source"
+                ],
+                "properties": {
+                  "player_username": {
+                    "type": "string",
+                    "description": "Who is banned."
+                  },
+                  "ban_reason": {
+                    "type": "string",
+                    "description": "The reason they see."
+                  },
+                  "source": {
+                    "type": "string",
+                    "description": "Where the ban came from, e.g. the game name."
+                  },
+                  "player_roblox_id": {
+                    "type": "integer",
+                    "description": "The player's Roblox user ID."
+                  },
+                  "private_reason": {
+                    "type": "string",
+                    "description": "A reason only staff see."
+                  },
+                  "ban_type": {
+                    "type": "string",
+                    "default": "permanent",
+                    "description": "permanent or temporary."
+                  },
+                  "duration_seconds": {
+                    "type": "integer",
+                    "description": "How long a temporary ban lasts."
+                  },
+                  "banned_by_username": {
+                    "type": "string",
+                    "description": "Who banned them."
+                  },
+                  "executor_roblox_user_id": {
+                    "type": "integer",
+                    "description": "Roblox user ID of whoever did this in game. Recorded as the actor when they are linked to someone in the workspace."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update-ban": {
+      "patch": {
+        "operationId": "update-ban",
+        "tags": [
+          "Bans"
+        ],
+        "summary": "Update ban",
+        "description": "Change a ban's reasons or is_active (id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ban"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The ban's ID."
+                  },
+                  "ban_reason": {
+                    "type": "string",
+                    "description": "New reason."
+                  },
+                  "private_reason": {
+                    "type": "string",
+                    "description": "New private reason."
+                  },
+                  "is_active": {
+                    "type": "boolean",
+                    "description": "false lifts it."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/revoke-ban": {
+      "patch": {
+        "operationId": "revoke-ban",
+        "tags": [
+          "Bans"
+        ],
+        "summary": "Revoke ban",
+        "description": "Lift a ban (id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The ban's ID."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-orders": {
+      "get": {
+        "operationId": "list-orders",
+        "tags": [
+          "Orders"
+        ],
+        "summary": "List orders",
+        "description": "Orders (status=, player=).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Only this status.",
+            "schema": {
+              "type": "string",
+              "description": "Only this status."
+            }
+          },
+          {
+            "name": "player",
+            "in": "query",
+            "required": false,
+            "description": "Matches the player username.",
+            "schema": {
+              "type": "string",
+              "description": "Matches the player username."
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "How many to return, up to 100.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50,
+              "description": "How many to return, up to 100."
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "How many to skip, for paging.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "description": "How many to skip, for paging."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Order"
+                      }
+                    },
+                    "offset": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search-orders": {
+      "get": {
+        "operationId": "search-orders",
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Search orders",
+        "description": "A player's orders (player).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "player",
+            "in": "query",
+            "required": true,
+            "description": "Matches the player username.",
+            "schema": {
+              "type": "string",
+              "description": "Matches the player username."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create-order": {
+      "post": {
+        "operationId": "create-order",
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Create order",
+        "description": "An order: player_username, items.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "player_username",
+                  "items"
+                ],
+                "properties": {
+                  "player_username": {
+                    "type": "string",
+                    "description": "Who ordered."
+                  },
+                  "items": {
+                    "type": "array",
+                    "items": {},
+                    "description": "What they ordered, in whatever shape your game uses."
+                  },
+                  "player_roblox_id": {
+                    "type": "integer",
+                    "description": "The player's Roblox user ID."
+                  },
+                  "submitted_by_username": {
+                    "type": "string",
+                    "description": "Who took the order."
+                  },
+                  "submitted_by_roblox_id": {
+                    "type": "integer",
+                    "description": "Their Roblox user ID."
+                  },
+                  "source": {
+                    "type": "string",
+                    "description": "Where it came from."
+                  },
+                  "notes": {
+                    "type": "string",
+                    "description": "Notes."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update-order": {
+      "patch": {
+        "operationId": "update-order",
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Update order",
+        "description": "Move an order on (id, status).\n\nA completed order cannot be changed.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "status"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "The order's ID."
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "The new status."
+                  },
+                  "prepared_by_username": {
+                    "type": "string",
+                    "description": "Who prepared it."
+                  },
+                  "prepared_by_roblox_id": {
+                    "type": "integer",
+                    "description": "Their Roblox user ID."
+                  },
+                  "actor_username": {
+                    "type": "string",
+                    "description": "Who made this change."
+                  },
+                  "actor_roblox_id": {
+                    "type": "integer",
+                    "description": "Their Roblox user ID."
+                  },
+                  "note": {
+                    "type": "string",
+                    "description": "A note for the timeline."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-order-history": {
+      "get": {
+        "operationId": "get-order-history",
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get order history",
+        "description": "An order's timeline (id).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "description": "The order's ID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The order's ID."
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-actions": {
+      "get": {
+        "operationId": "list-actions",
+        "tags": [
+          "Workspace"
+        ],
+        "summary": "List actions",
+        "description": "Every action, its method, module and summary.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/workspace_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "ws_ key",
+        "description": "A workspace API key from Settings › Developer."
+      }
+    },
+    "parameters": {
+      "workspace_id": {
+        "name": "workspace_id",
+        "in": "query",
+        "required": true,
+        "description": "The workspace: the 24-character ID in its Ankra address, or its UUID.",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "examples": [
+              "roblox_user_id is required"
+            ]
+          }
+        }
+      },
+      "Success": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "const": true
+          }
+        }
+      },
+      "Role": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "color": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "priority": {
+            "type": "integer"
+          }
+        }
+      },
+      "StaffMember": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "display_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "roblox_username": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "roblox_user_id": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          }
+        }
+      },
+      "Person": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "display_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "roblox_username": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "roblox_user_id": {
+            "type": "integer"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          }
+        }
+      },
+      "Label": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "MemberLabel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "assigned_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LogbookEntry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "entry_type": {
+            "type": "string",
+            "examples": [
+              "Promotion"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "examples": [
+              "Promotion"
+            ]
+          },
+          "content": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "examples": [
+              "Promoted for hard work."
+            ]
+          },
+          "amount": {
+            "type": "integer",
+            "examples": [
+              1
+            ]
+          },
+          "created_by": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "TimeOffRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "roblox_user_id": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "type": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "approved",
+              "denied"
+            ]
+          },
+          "reviewed_by": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "reviewed_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ActivitySession": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "roblox_user_id": {
+            "type": "integer"
+          },
+          "roblox_username": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "game_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ended_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "minutes": {
+            "type": "integer"
+          },
+          "active_minutes": {
+            "type": "integer"
+          },
+          "messages_sent": {
+            "type": "integer"
+          }
+        }
+      },
+      "Session": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid",
+            "description": "Null until someone acts on the session."
+          },
+          "schedule_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "examples": [
+              "Training"
+            ]
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "start_time": {
+            "type": "string",
+            "examples": [
+              "19:00:00"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "scheduled",
+              "cancelled"
+            ]
+          },
+          "is_adhoc": {
+            "type": "boolean"
+          },
+          "game_link": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "banner_url": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "SessionType": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "first_event_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "start_time": {
+            "type": "string"
+          },
+          "repeat_pattern": {
+            "type": "string",
+            "enum": [
+              "none",
+              "daily",
+              "weekly",
+              "biweekly",
+              "monthly"
+            ]
+          },
+          "public_description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "game_link": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Assignment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "roblox_user_id": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "template_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "due_date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date"
+          },
+          "period_start": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "examples": [
+              "pending"
+            ]
+          },
+          "priority": {
+            "type": "string",
+            "examples": [
+              "normal"
+            ]
+          },
+          "assignment_type": {
+            "type": "string",
+            "examples": [
+              "checkbox"
+            ]
+          },
+          "target": {
+            "type": "integer"
+          },
+          "progress": {
+            "type": "integer"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Ban": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ban_number": {
+            "type": "integer"
+          },
+          "player_username": {
+            "type": "string"
+          },
+          "player_roblox_id": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "banned_by_username": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ban_reason": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "ban_type": {
+            "type": "string",
+            "examples": [
+              "permanent"
+            ]
+          },
+          "duration_seconds": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "is_active": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "order_number": {
+            "type": "integer"
+          },
+          "player_username": {
+            "type": "string"
+          },
+          "player_roblox_id": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "items": {},
+          "status": {
+            "type": "string"
+          },
+          "submitted_by_username": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "prepared_by_username": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "The key is wrong, or is not for this workspace.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

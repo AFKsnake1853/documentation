@@ -1,0 +1,29 @@
+---
+title: "Quickstart"
+description: "Connect your Roblox group, choose who counts as staff, and start tracking activity."
+icon: "rocket"
+---
+
+You need to be a workspace admin for every step here. Everything is under **Settings**, at the bottom of the sidebar.
+
+<Steps>
+  <Step title="Connect your Roblox group">
+    Open **Settings › General** and enter your **Roblox group ID**. It's the number in your group's address on Roblox: `roblox.com/communities/`**`123456`**`/…`.
+  </Step>
+  <Step title="Choose who counts as staff">
+    Open **Settings › Activity Tracking** and switch on each rank that is staff. Everyone in those ranks appears on the roster, and their time in game is recorded.
+  </Step>
+  <Step title="Set up roles">
+    Open **Settings › Roles** to decide what each role can see and do, such as who can write in the logbook or approve time off. See [Roles and permissions](/ankra/roles-and-permissions).
+  </Step>
+  <Step title="Add the activity loader to your game">
+    On **Settings › Activity Tracking**, generate the loader and download it. Put the script in **ServerScriptService**, then turn on **Game Settings › Security › Allow HTTP Requests** in Roblox Studio. See [Activity](/ankra/activity#install-the-activity-loader).
+  </Step>
+  <Step title="Connect Auto Ranking (optional)">
+    To promote and demote people from Ankra, open **Settings › Auto Ranking › Configuration** and sign in with a Roblox account that can change ranks in your group. See [Auto Ranking](/ankra/auto-ranking).
+  </Step>
+</Steps>
+
+<Tip>
+  Activity isn't recorded in Roblox Studio play tests, so your own testing doesn't show up on the leaderboard. Join the live game to check it works.
+</Tip>

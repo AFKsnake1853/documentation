@@ -1,0 +1,64 @@
+---
+title: "Introduction"
+description: "Read and write your Ankra workspace from your games and scripts."
+icon: "code"
+---
+
+The Ankra API lets your Roblox games, Discord bots and scripts work with your workspace: log promotions, approve time off, start sessions, record activity and more.
+
+## Base URL
+
+```text
+https://api.lumonol.co.uk/ankra
+```
+
+Every endpoint is a named action under the base URL, such as `/create-logbook-entry` or `/get-upcoming-sessions`.
+
+## Your first request
+
+Log a promotion for a staff member:
+
+```bash
+curl --request POST \
+  --url "https://api.lumonol.co.uk/ankra/create-logbook-entry?workspace_id=YOUR_WORKSPACE_ID" \
+  --header "Authorization: Bearer YOUR_API_KEY" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "roblox_user_id": 4468540967,
+    "entry_type": "Promotion",
+    "title": "Promotion",
+    "content": "Promoted for hard work."
+  }'
+```
+
+You need an API key and your workspace ID. See [Authentication](/ankra/api-reference/authentication).
+
+## Requests
+
+- **People** are identified by their Roblox user ID, `roblox_user_id`, not their username.
+- **Parameters** go in the query string for `GET` and `DELETE` requests, and in a JSON body for `POST`, `PATCH` and `PUT`. Send `Content-Type: application/json` with a body.
+- **Modules:** an endpoint that belongs to a module, such as the logbook in **Staff**, returns `403` while that module is turned off for your workspace.
+
+## Responses
+
+Responses are JSON. A successful request returns `200`, or `201` when it creates something.
+
+When a request fails, you get an error status and a message:
+
+```json
+{
+  "error": "roblox_user_id is required"
+}
+```
+
+| Status | Meaning |
+|---|---|
+| `400` | A parameter is missing or invalid. |
+| `401` | The API key is wrong, or isn't for this workspace. |
+| `403` | The module is turned off, or the action isn't allowed. |
+| `404` | What you asked for doesn't exist in this workspace. |
+| `405` | The endpoint takes a different HTTP method. |
+
+## OpenAPI
+
+The full API description is at [`https://api.lumonol.co.uk/ankra/openapi.json`](https://api.lumonol.co.uk/ankra/openapi.json). Import it into Postman, Insomnia or your own tools.

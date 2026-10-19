@@ -1,0 +1,47 @@
+---
+title: "Logbook"
+description: "Promotions, demotions, warnings, suspensions and notes, on each person's record."
+icon: "notebook-pen"
+---
+
+Every staff profile has a **Logbook** tab: the person's record, newest first. Reading it needs the **View logbooks** permission, and writing it needs **Manage staff**. People can always read their own record.
+
+## Log an entry
+
+<Steps>
+  <Step title="Open their logbook">
+    Open the person's profile and select **Logbook**, then click **New entry**.
+  </Step>
+  <Step title="Write it">
+    The first line is the entry's title. To start from a template, click **Template**.
+  </Step>
+  <Step title="Choose the kind">
+    Use the arrow on the **Log** button to pick the kind of entry, then click **Log**.
+  </Step>
+</Steps>
+
+| Kind | What it does |
+|---|---|
+| **Note** | A note on their record. |
+| **Promotion** / **Demotion** | Can rank them up or down in your group at the same time, with **Rank to**. |
+| **Warning** | Counts towards their warnings. Set **Amount of warnings** to give several at once. |
+| **Warning Revocation** | Takes warnings back off. |
+| **Suspension** | Ranks them down while suspended, and back when it ends. Set how many days it lasts, or leave it until lifted. |
+| **Termination** | Can rank them to your lowest rank. |
+| **Reminder** | A reminder on their record. |
+
+<Note>
+  **Rank to** only appears once [Auto Ranking](/ankra/auto-ranking) is connected. If Roblox refuses the rank change, nothing is logged.
+</Note>
+
+## Edit or delete an entry
+
+Click the pencil on an entry to edit its text. You can only edit entries you wrote. Click the bin to delete an entry. You'll be asked to confirm.
+
+## System entries
+
+Entries logged by your game or through the [API](/ankra/api-reference/introduction) show **System** with the Ankra logo, because no one in the workspace wrote them.
+
+## Templates
+
+Templates are starting points for common entries. Manage them in **Settings › Logbook**. A template can use `{name}` for the person, `{me}` for you, and `{date}` for today.

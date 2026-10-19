@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Kith Docs",
+  "name": "Lumonol Docs",
   "icons": {
     "library": "lucide"
   },
@@ -11,98 +11,187 @@
     "dark": "#36c185"
   },
   "background": {
-  "color": {
-    "light": "#FFFFFF",
-    "dark": "#000000"
-  }
-},
+    "color": {
+      "light": "#FFFFFF",
+      "dark": "#000000"
+    }
+  },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Documentation",
+        "tab": "Ankra",
+        "icon": "layers",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Get started",
             "pages": [
-              "quick-start"
+              "ankra/introduction",
+              "ankra/quickstart"
             ]
           },
           {
-            "group": "Using Kith",
+            "group": "Using Ankra",
             "pages": [
-              "lumonol",
-              "home",
-              "messages",
-              "activity-tracking",
+              "ankra/staff",
+              "ankra/logbook",
+              "ankra/time-off",
+              "ankra/activity",
+              "ankra/sessions",
+              "ankra/assignments",
+              "ankra/knowledge"
+            ]
+          },
+          {
+            "group": "Settings",
+            "pages": [
+              "ankra/roles-and-permissions",
+              "ankra/auto-ranking"
+            ]
+          },
+          {
+            "group": "API reference",
+            "openapi": "ankra/api-reference/openapi.json",
+            "pages": [
+              "ankra/api-reference/introduction",
+              "ankra/api-reference/authentication",
+              {
+                "group": "Workspace",
+                "pages": [
+                  "GET /get-workspace",
+                  "GET /list-roles",
+                  "GET /get-game-config",
+                  "GET /list-ranks",
+                  "GET /list-game-servers",
+                  "GET /list-actions"
+                ]
+              },
               {
                 "group": "Staff",
-                "icon": "users",
                 "pages": [
-                  "time-off",
-                  "views",
-                  "directory-profile"
+                  "GET /list-staff",
+                  "GET /get-staff-dashboard",
+                  "GET /get-leaderboard",
+                  "GET /list-hired-staff",
+                  "GET /get-staff-member",
+                  "GET /search-users",
+                  "PATCH /set-rank",
+                  "GET /list-online-staff",
+                  "GET /list-departments",
+                  "GET /get-directory"
+                ]
+              },
+              {
+                "group": "Labels",
+                "pages": [
+                  "GET /list-labels",
+                  "GET /get-member-labels",
+                  "PUT /set-member-labels"
+                ]
+              },
+              {
+                "group": "Logbook",
+                "pages": [
+                  "GET /get-logbook",
+                  "POST /create-logbook-entry",
+                  "PATCH /edit-logbook-entry",
+                  "DELETE /delete-logbook-entry"
+                ]
+              },
+              {
+                "group": "Time off",
+                "pages": [
+                  "GET /list-timeoff",
+                  "GET /get-member-timeoff",
+                  "POST /create-timeoff",
+                  "PATCH /review-timeoff",
+                  "PATCH /adjust-timeoff",
+                  "POST /end-timeoff",
+                  "DELETE /delete-timeoff"
+                ]
+              },
+              {
+                "group": "Activity",
+                "pages": [
+                  "GET /get-member-activity",
+                  "GET /list-activity-sessions",
+                  "POST /add-activity",
+                  "POST /sync-activity",
+                  "GET /get-timesheet",
+                  "PATCH /update-activity-record",
+                  "DELETE /delete-activity-record",
+                  "POST /end-activity-session"
                 ]
               },
               {
                 "group": "Sessions",
-                "icon": "calendar",
                 "pages": [
-                  "creating-sessions",
-                  "joining-sessions",
-                  "taking-attendance",
-                  "session-boards"
+                  "GET /list-session-types",
+                  "POST /create-session-type",
+                  "PATCH /update-session-type",
+                  "DELETE /delete-session-type",
+                  "GET /list-sessions",
+                  "GET /get-upcoming-sessions",
+                  "POST /create-session",
+                  "POST /cancel-session",
+                  "POST /restore-session",
+                  "DELETE /delete-session",
+                  "GET /get-session-signups",
+                  "POST /assign-session-role",
+                  "GET /list-session-servers",
+                  "POST /create-session-server",
+                  "PATCH /update-session-server",
+                  "DELETE /delete-session-server",
+                  "GET /get-session-logs",
+                  "GET /list-session-roles",
+                  "GET /list-session-tags"
                 ]
               },
               {
-                "group": "Knowledge Base",
-                "icon": "book-text",
+                "group": "Assignments",
                 "pages": [
-                  "creating-content",
-                  "categories"
+                  "GET /list-assignments",
+                  "POST /create-assignment",
+                  "PATCH /update-assignment",
+                  "DELETE /delete-assignment",
+                  "GET /list-assignment-templates"
+                ]
+              },
+              {
+                "group": "Knowledge",
+                "pages": [
+                  "GET /list-kb-categories",
+                  "GET /list-kb-documents",
+                  "GET /get-kb-document",
+                  "GET /list-kb-quick-links"
+                ]
+              },
+              {
+                "group": "Bans",
+                "pages": [
+                  "GET /list-bans",
+                  "GET /get-ban",
+                  "POST /create-ban",
+                  "PATCH /update-ban",
+                  "PATCH /revoke-ban"
+                ]
+              },
+              {
+                "group": "Orders",
+                "pages": [
+                  "GET /list-orders",
+                  "GET /search-orders",
+                  "POST /create-order",
+                  "PATCH /update-order",
+                  "GET /get-order-history"
                 ]
               }
             ]
           },
           {
-            "group": "Open-Source Licence",
+            "group": "Legal",
             "pages": [
               "lumonol-software-licence-lsl-v1-0"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction",
-              "api-reference/authentication"
-            ]
-          },
-          {
-            "group": "Moderation",
-            "pages": [
-              "api-reference/moderation/list-bans",
-              "api-reference/moderation/check-ban",
-              "api-reference/moderation/create-ban",
-              "api-reference/moderation/edit-ban",
-              "api-reference/moderation/delete-ban"
-            ]
-          },
-          {
-            "group": "Sessions",
-            "pages": [
-              "api-reference/sessions/list-sessions",
-              "api-reference/sessions/list-signups",
-              "api-reference/sessions/assign-role",
-              "api-reference/sessions/list-servers",
-              "api-reference/sessions/list-server-signups",
-              "api-reference/sessions/create-server",
-              "api-reference/sessions/edit-server",
-              "api-reference/sessions/delete-server"
             ]
           }
         ]
@@ -111,7 +200,7 @@
   },
   "logo": {
     "light": "/logo/light.svg",
-    "dark": "/logo/dark.png",
+    "dark": "/logo/dark.svg",
     "height": 35
   },
   "navbar": {
@@ -142,5 +231,18 @@
   "appearance": {
     "strict": true,
     "default": "dark"
+  },
+  "api": {
+    "playground": {
+      "display": "interactive"
+    },
+    "examples": {
+      "languages": [
+        "curl",
+        "javascript",
+        "python"
+      ],
+      "defaults": "required"
+    }
   }
 }

@@ -1,0 +1,44 @@
+---
+title: "Authentication"
+description: "Create an API key and send it with your workspace ID."
+icon: "key-round"
+---
+
+Every request needs two things: an API key, and the ID of the workspace it belongs to.
+
+## Create an API key
+
+<Steps>
+  <Step title="Open Developer settings">
+    In Ankra, go to **Settings › Developer**. You need to be a workspace admin.
+  </Step>
+  <Step title="Generate a key">
+    Click **Generate key**, give it a name such as **Main game** or **Discord bot**, then click **Generate**.
+  </Step>
+  <Step title="Copy it">
+    Copy the key from the window that opens. It starts with `ws_`. Ankra shows the full key only once.
+  </Step>
+</Steps>
+
+To replace a key, generate a new one and delete the old one. Anything using a deleted key stops working straight away.
+
+## Send the key
+
+Put the key in the `Authorization` header, and your workspace ID in the `workspace_id` query parameter:
+
+```bash
+curl --url "https://api.lumonol.co.uk/ankra/list-staff?workspace_id=YOUR_WORKSPACE_ID" \
+  --header "Authorization: Bearer ws_your_key"
+```
+
+Your workspace ID is in your Ankra address: `…/`**`bbd141b5b331fb8222065601`**`/staff`. **Settings › Developer** shows it too.
+
+Each key only works for the workspace it was created in.
+
+<Warning>
+  An API key can change your workspace's data. Keep it on your servers: in a Roblox server script, a bot or a backend. Never put it in a LocalScript, a website's browser code, or a public repository.
+</Warning>
+
+## Try it here
+
+Every endpoint page has a playground. Click **Try it**, enter your key and workspace ID, and send a real request to your workspace.
