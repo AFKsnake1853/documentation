@@ -1,9 +1,9 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Lumonol Docs",
+  "name": "Lumonol Documentation",
   "icons": {
-    "library": "lucide"
+    "library": "fontawesome"
   },
   "colors": {
     "primary": "#36c185",
@@ -13,15 +13,19 @@
   "background": {
     "color": {
       "light": "#FFFFFF",
-      "dark": "#000000"
-    }
+      "dark": "#0A0A0A"
+    },
+    "decoration": "gradient"
   },
-  "favicon": "/favicon.svg",
+  "favicon": {
+    "light": "/images/lumonol-mark-dark.png",
+    "dark": "/images/lumonol-mark.png"
+  },
   "navigation": {
     "tabs": [
       {
         "tab": "Ankra",
-        "icon": "layers",
+        "icon": "layer-group",
         "groups": [
           {
             "group": "Get started",
@@ -199,9 +203,10 @@
     ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg",
-    "height": 35
+    "light": "/images/LUMONOL-Logo.png",
+    "dark": "/images/lumonol-logo.png",
+    "height": 35,
+    "href": "https://lumonol.co.uk"
   },
   "navbar": {
     "links": [
@@ -219,18 +224,18 @@
   "contextual": {
     "options": [
       "copy",
-      "view",
       "chatgpt",
       "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
+      "perplexity"
     ]
   },
   "appearance": {
     "strict": true,
     "default": "dark"
+  },
+  "styling": {
+    "eyebrows": "section",
+    "codeblocks": "dark"
   },
   "api": {
     "playground": {
