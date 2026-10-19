@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "luma",
+  "theme": "mint",
   "name": "Lumonol Documentation",
   "icons": {
     "library": "fontawesome"
@@ -281,8 +281,5 @@
       ],
       "defaults": "required"
     }
-  },
-  "fonts": {
-    "family": "Inter"
   }
 }
